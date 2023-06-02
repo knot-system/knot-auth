@@ -9,7 +9,10 @@ function hash_password( $password ) {
 }
 
 
-function validate_password( $password, $hashed_password ) {
+function validate_password( $password ) {
+	global $core;
+
+	$hashed_password = $core->config->get('password');
 
 	return password_verify( $password, $hashed_password );
 }

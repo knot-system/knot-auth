@@ -28,16 +28,5 @@ $core = new Core();
 $core->setup();
 
 
-// here we gooo
-
-header("Content-type: application/json");
-
-
 $endpoint = $core->route->get('endpoint');
-var_dump($endpoint);
-if( ! file_exists( $core->abspath.'system/endpoints/'.$endpoint.'.php') ){
-	$core->debug( 'endpoint not found!', $endpoint );
-	exit;
-}
-
 $core->include( 'system/endpoints/'.$endpoint.'.php' );

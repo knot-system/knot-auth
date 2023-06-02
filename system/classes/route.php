@@ -29,25 +29,39 @@ class Route {
 
 		$request = explode( '/', $request );
 
-		if( empty($request[0]) || ! file_exists( $core->abspath.'system/endpoints/'.$request[0].'.php' ) ){
+		$query = [];
+		if( $request_type == 'get' && $query_string ) {
+			$query_string = explode('&', $query_string);
+			$query_string = array_filter($query_string); // remove empty elements
 
-			if( str_starts_with($_SERVER['HTTP_ACCEPT'], 'text/html') ) {
-				// show html error message
-				$core->include( 'system/no-content.php' );
-				exit;
-			} else {
-				// show json error
-				$core->error( 'unknown_endpoint', 'this endpoint does not exist' );
+			foreach( $query_string as $query_element ) {
+				$query_element = explode('=', $query_element);
+				if( count($query_element) < 1 ) continue;
+
+				if( count($query_element) == 1 ) {
+					$query[strtolower($query_element[0])] = true;
+					continue;
+				} 
+
+				$query[strtolower($query_element[0])] = $query_element[1];
+
 			}
-
+		} elseif( $request_type == 'post' && ! empty($_REQUEST) ) {
+			$query = $_REQUEST;
 		}
 
-		$endpoint = $request[0];
+		$endpoint = '404';
+
+		if( ! empty($request[0]) && file_exists( $core->abspath.'system/endpoints/'.$request[0].'.php' ) ){
+			$endpoint = $request[0];
+		}
+
 
 		$this->route = array(
 			'endpoint' => $endpoint,
 			'request_type' => $request_type,
-			'request' => $request
+			'request' => $request,
+			'query' => $query
 		);
 		
 		return $this;
