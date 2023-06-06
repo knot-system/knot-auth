@@ -10,3 +10,11 @@ function base64_urlencode( $string ) {
 	$string = str_replace('+/', '-_', $string);
 	return rtrim($string, '=' );
 }
+
+function generate_access_token( $length = 256 ) {
+
+	$bytes = random_bytes( $length );
+	$access_token = bin2hex($bytes);
+
+	return $access_token;
+}
