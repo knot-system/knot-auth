@@ -297,8 +297,7 @@ if( $response_type == 'code' ) {
 		exit;
 	}
 
-	$code_verifier_challenge = base64_encode(hash( $algo, $code_verifier));
-
+	$code_verifier_challenge = generate_pkce_code_challenge( $code_verifier, $algo );
 
 	if( $code_verifier_challenge != $data['code_challenge'] ) {
 		snippet('header');
@@ -311,7 +310,7 @@ if( $response_type == 'code' ) {
 	header("Content-type: application/json");
 
 	$return = [
-		'me' => $data['me'], // TODO: this should be from the config, depending on the password provided; TODO: we need to add the 'me' parameter to the config.php, and possible allow multiple me/password combinations.
+		'me' => $core->config->get('me')
 	];
 
 	echo json_encode( $return );

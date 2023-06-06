@@ -89,8 +89,8 @@ if( $config_missing ) {
 		?>
 		<hr>
 		<form action="<?= $baseurl ?>" method="POST">
+			<p><label><strong>Me</strong><br><small>the url you identify as; required</small><br><input type="text" name="me" placeholder="https://www.example.com" required></label></p>
 			<p><label><strong>Password</strong><br><small>the password you want to use when using this service to log in; required</small><br><input type="password" name="password" placeholder="your super secret password" value="" required></label></p>
-			<p><label><strong>Allowed URLs</strong><br><small>One URL per line; leave empty to allow every URL</small><br><textarea name="authorized_urls" style="width: 400px; height: 100px;" placeholder="https://www.example.com/eigenheim/"></textarea></label></p>
 			<p><button>start installation</button></p>
 		</form>
 		<?php
@@ -203,25 +203,14 @@ if( $output ) {
 
 if( $config_missing ) {
 
-	$authorized_urls = [];
-	foreach( explode( "\n", $_REQUEST['authorized_urls']) as $url ) {
-		if( trim($url) == '' ) continue;
-		$authorized_urls[] = trim($url);
-	}
-	$authorized_urls = array_unique($authorized_urls);
-
-
+	$me = $_REQUEST['me'];
 	$password = $_REQUEST['password'];
 	
 	include_once( $abspath.'system/functions/cryptography.php' );
 	$password = hash_password($password);
 
 
-	$content = "<?php\r\n\r\nreturn [\r\n	'password' => '$password',\r\n	'allowed_urls' => [";
-	foreach( $authorized_urls as $authorized_url ) {
-		$content .= "\r\n		'".$authorized_url."',";
-	}
-	$content .= "\r\n	],\r\n];\r\n";
+	$content = "<?php\r\n\r\nreturn [\r\n	'password' => '$password',\r\n	'me' => '".$me."',\r\n];\r\n";
 	if( file_put_contents( $abspath.'config.php', $content ) === false ) {
 
 		if( $output ) {

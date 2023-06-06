@@ -29,26 +29,7 @@ class Route {
 
 		$request = explode( '/', $request );
 
-		$query = [];
-		if( $request_type == 'get' && $query_string ) {
-			$query_string = explode('&', $query_string);
-			$query_string = array_filter($query_string); // remove empty elements
-
-			foreach( $query_string as $query_element ) {
-				$query_element = explode('=', $query_element);
-				if( count($query_element) < 1 ) continue;
-
-				if( count($query_element) == 1 ) {
-					$query[strtolower($query_element[0])] = true;
-					continue;
-				} 
-
-				$query[strtolower($query_element[0])] = $query_element[1];
-
-			}
-		} elseif( $request_type == 'post' && ! empty($_REQUEST) ) {
-			$query = $_REQUEST;
-		}
+		$query = $_REQUEST;
 
 		$endpoint = '404';
 
