@@ -93,9 +93,13 @@ if( $response_type == 'code' ) {
 
 		$redirect = parse_url($redirect_uri);
 
-		$code = get_hash( uniqid() ); // TODO: The code MUST expire shortly after it is issued to mitigate the risk of leaks, and MUST be valid for only one use. A maximum lifetime of 10 minutes is recommended. See OAuth 2.0 Section 4.1.2 for additional requirements on the authorization code.
+		$code = get_hash( uniqid() );
+		// NOTE: The code MUST expire shortly after it is issued to mitigate the risk of leaks, and MUST be valid for only one use. A maximum lifetime of 10 minutes is recommended. See OAuth 2.0 Section 4.1.2 for additional requirements on the authorization code.
+		$tenminutesinseconds = 10*60; // so we cache the token for a maximum of 10 minutes
+		// the cache file is also deleted as soon as we use the token, so it can't be used more than once
 
-		$iss = url(); // TODO: check, what we want to have here
+
+		$iss = url(); // TODO: check, what we want to use here -- the client will check $iss like this (from https://indieauth.spec.indieweb.org/#authorization-response ): [check] That the iss parameter in the request is valid and matches the issuer parameter provided by the Server Metadata endpoint during Discovery as outlined in OAuth 2.0 Authorization Server Issuer Identification. Clients MUST compare the parameters using simple string comparison. If the value does not match the expected issuer identifier, clients MUST reject the authorization response and MUST NOT proceed with the authorization grant. For error responses, clients MUST NOT assume that the error originates from the intended authorization server. 
 
 		$redirect['query'] = array(
 			'code' => $code,
@@ -104,7 +108,6 @@ if( $response_type == 'code' ) {
 		);
 
 		$data['code'] = $code;
-		$tenminutesinseconds = 10*60;
 		$code_cache = new Cache( 'code', $code, true, $tenminutesinseconds );
 		$code_cache->add_data(json_encode($data));
 
@@ -148,6 +151,24 @@ if( $response_type == 'code' ) {
 			snippet('footer');
 			exit;
 		}
+
+		if( ! $code_challenge ) {
+			// NOTE: we require a code_challenge (and later a code_verifier), and thus don't support older clients.
+			// (from https://indieauth.spec.indieweb.org/#authorization-request : For backwards compatibility, authorization endpoints MAY accept authorization requests without a code challenge if the authorization server wishes to support older clients.)
+			snippet('header');
+			$core->error( 'missing_code_challenge', 'the code_challenge is missing', NULL, false );
+			snippet('footer');
+			exit;
+		}
+
+		if( $code_challenge_method != 'S256' ) {
+			// NOTE: we currently only support S256 as a code_challenge_method
+			snippet('header');
+			$core->error( 'unknown_code_challenge_method', 'this code_challenge_method is not supported (we only support S256 at the moment)', NULL, false );
+			snippet('footer');
+			exit;
+		}
+
 
 		snippet( 'header' );
 
@@ -213,6 +234,7 @@ if( $response_type == 'code' ) {
 
 	$code_verifier = false;
 	if( isset($query['code_verifier']) ) $code_verifier = $query['code_verifier'];
+	// The original plaintext random string generated before starting the authorization request.
 
 
 	if( ! $code ) {
@@ -225,7 +247,7 @@ if( $response_type == 'code' ) {
 
 	$cache = new Cache( 'code', $code, true );
 	$data = $cache->get_data();
-	$cache->remove(); // every code is only valid for one-time use
+	$cache->remove(); // every code is only valid for one-time use, see https://indieauth.spec.indieweb.org/#authorization-response
 
 	if( $data ) {
 		$data = json_decode( $data, true );
@@ -252,8 +274,38 @@ if( $response_type == 'code' ) {
 		exit;
 	}
 
-	// TODO: $code_verifier: The original plaintext random string generated before starting the authorization request.
-	// TODO: Note that for backwards compatibility, the authorization endpoint MAY allow requests without the code_verifier. If an authorization code was issued with no code_challenge present, then the authorization code exchange MUST NOT include a code_verifier, and similarly, if an authorization code was issued with a code_challenge present, then the authorization code exchange MUST include a code_verifier.
+	
+	if( ! $code_verifier ) {
+		// NOTE: we require a code_challenge and code_verifier, and thus don't support older clients.
+		// (from https://indieauth.spec.indieweb.org/#request : Note that for backwards compatibility, the authorization endpoint MAY allow requests without the code_verifier. If an authorization code was issued with no code_challenge present, then the authorization code exchange MUST NOT include a code_verifier, and similarly, if an authorization code was issued with a code_challenge present, then the authorization code exchange MUST include a code_verifier.)
+		snippet('header');
+		$core->error( 'missing_code_verifier', 'the code_verifier is missing', NULL, false );
+		snippet('footer');
+		exit;
+	}
+
+
+	// validate code_verifier / code_challenge
+	$algo = false;
+	if( $data['code_challenge_method'] == 'S256' ) {
+		$algo = 'sha256';
+	} else {
+		// NOTE: we currently only support S256 as a code_challenge_method
+		snippet('header');
+		$core->error( 'unknown_code_challenge_method', 'the code_challenge_method is not supported', NULL, false );
+		snippet('footer');
+		exit;
+	}
+
+	$code_verifier_challenge = base64_encode(hash( $algo, $code_verifier));
+
+
+	if( $code_verifier_challenge != $data['code_challenge'] ) {
+		snippet('header');
+		$core->error( 'invalid_code_verifier', 'the code_verifier is invalid', NULL, false );
+		snippet('footer');
+		exit;
+	}
 
 
 	header("Content-type: application/json");
