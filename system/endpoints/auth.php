@@ -195,13 +195,9 @@ if( $response_type == 'code' ) {
 
 		snippet( 'header' );
 
-		echo '<div class="box">';
+		snippet( 'login-information', [ 'data' => $data ] );
 
-			snippet( 'login-information', [ 'data' => $data ] );
-
-			snippet( 'login-form', [ 'hash' => $hash ] );
-
-		echo '</div>';
+		snippet( 'login-form', [ 'hash' => $hash ] );
 
 		snippet( 'footer' );
 

@@ -5,7 +5,7 @@
 if( ! $core ) exit;
 
 ?>
-
+	</div>
 </main>
 
 <footer>

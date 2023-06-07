@@ -17,6 +17,10 @@ ___________.__                    .__                                       .__ 
 <head>
 	<title>Einwohnermeldeamt</title>
 
+	<meta tag="generator" content="Einwohnermeldeamt v.<?= $core->version() ?>">
+
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2210 0 100 100%22><text y=%22.90em%22 font-size=%2290%22>🗝️</text></svg>">
+
 	<style>
 		html, body {
 			margin: 0;
@@ -32,13 +36,16 @@ ___________.__                    .__                                       .__ 
 		}
 		.box {
 			width: 100%;
-			max-width: 500px;
+			max-width: 800px;
 			margin: 0 auto;
 			border: 1px solid #ccc;
 			padding: 40px;
 			border-radius: 10px;
 			background: #fff;
 		}
+			.box > *:first-child {
+				margin-top: 0;
+			}
 		footer {
 			text-align: right;
 			font-size: 0.8em;
@@ -48,3 +55,4 @@ ___________.__                    .__                                       .__ 
 </head>
 <body>
 <main>
+	<div class="box">
