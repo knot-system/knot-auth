@@ -1,6 +1,6 @@
 <?php
 
-// 2023-06-02
+// 2023-06-07
 
 
 function normalize_url( $url, $fragment_allowed = true ) {
@@ -52,22 +52,6 @@ function normalize_url( $url, $fragment_allowed = true ) {
 
 
 function build_url( $parsed_url ) {
-
-	if( is_array($parsed_url['query']) ) {
-
-		$query = [];
-
-		foreach( $parsed_url['query'] as $query_key => $query_value ) {
-			$query_part = $query_key.'='.$query_value;
-			$query[] = $query_part;
-		}
-
-		$query = implode('&', $query);
-
-		$parsed_url['query'] = $query;
-	}
-
-
 	$scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
 	$host     = isset($parsed_url['host']) ? $parsed_url['host'] : '';
 	$port     = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
@@ -79,4 +63,18 @@ function build_url( $parsed_url ) {
 	$fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
 
 	return "$scheme$user$pass$host$port$path$query$fragment";
+}
+
+
+function decode_formurlencoded( $string ) {
+	
+	$parts = explode( '&', $string );
+	$return = array();
+
+	foreach( $parts as $part ) {
+		$part = explode( '=', $part );
+		$return[urldecode($part[0])] = urldecode($part[1]);
+	}
+
+	return $return;
 }
