@@ -169,9 +169,6 @@ if( $response_type == 'code' ) {
 			exit;
 		}
 
-
-		snippet( 'header' );
-
 		$data = [
 			'response_type' => $response_type,
 			'client_id' => $client_id,
@@ -183,45 +180,31 @@ if( $response_type == 'code' ) {
 			'me' => $me
 		];
 
+		// TODO: use $client_id to fetch and display more information
+		// see https://indieauth.spec.indieweb.org/#client-information-discovery
+		// add information to $data and use inside login-information snippet
+
+		// TODO: use provided $me to show more information, see https://indieauth.spec.indieweb.org/#authorization-request
+		// add information to $data and use inside login-information snippet
+
 		$hash = get_hash( json_encode($data) );
 
 		$cache = new Cache( 'auth', $hash, true );
-
 		$cache->add_data( json_encode($data) );
 
 
-		// TODO: display this information for the user
-		echo '<pre>';
-		var_dump($response_type);
-		var_dump($client_id);
-		var_dump($redirect_uri);
-		var_dump($state);
-		var_dump($code_challenge);
-		var_dump($code_challenge_method);
-		var_dump($scope);
-		var_dump($me);
-		echo '</pre>';
+		snippet( 'header' );
 
-		// TODO: use $client_id to fetch and display more information
-		// see https://indieauth.spec.indieweb.org/#client-information-discovery
+		echo '<div class="box">';
 
-		// TODO: use provided $me to show more information, see https://indieauth.spec.indieweb.org/#authorization-request
+			snippet( 'login-information', [ 'data' => $data ] );
 
+			snippet( 'login-form', [ 'hash' => $hash ] );
 
-		?>
-		<form action="<?= url('auth') ?>" method="POST">
-
-			<label>Password: <input name="password" type="password" autofocus></label>
-
-			<input type="hidden" name="hash" value="<?= $hash ?>">
-			<input type="hidden" name="response_type" value="code">
-
-			<button>authorize</button>
-
-		</form>
-		<?php
+		echo '</div>';
 
 		snippet( 'footer' );
+
 
 	}
 
