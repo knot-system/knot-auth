@@ -12,6 +12,15 @@ if( ! $core ) exit;
 $query = $core->route->get('query');
 $request_type = $core->route->get('request_type');
 
+// access token may be send via Authorization Bearer
+if( empty($query['token']) ) {
+	if( ! empty($_SERVER['HTTP_AUTHORIZATION']) ) {
+		$query['token'] = trim(str_replace('Bearer', '', $_SERVER['HTTP_AUTHORIZATION']));
+	} elseif( ! empty($_SERVER['Authorization']) ) {
+		$query['token'] = trim(str_replace('Bearer', '', $_SERVER['Authorization']));
+	}
+}
+
 
 if( ! empty($query['token']) ) {
 	// verify token
@@ -72,13 +81,6 @@ if( ! empty($query['token']) ) {
 	$redirect_uri = false;
 	if( ! empty($query['redirect_uri']) ) $redirect_uri = $query['redirect_uri'];
 
-
-	if( $request_type != 'post' ) {
-		snippet('header');
-		$core->error( 'invalid_request_type', 'only post requests allowed', NULL, false );
-		snippet('footer');
-		exit;
-	}
 
 	$code = false;
 	if( isset($query['code']) ) $code = $query['code'];

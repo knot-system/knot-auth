@@ -28,7 +28,7 @@ if( ! empty($query['redirect_uri']) ) $redirect_uri = $query['redirect_uri'];
 
 if( $response_type == 'code' ) {
 
-	if( $request_type == 'post' && ! empty($query['hash']) ) {
+	if( ! empty($query['hash']) ) {
 
 		// user entered their password, check it and redirect to $redirect_uri
 
@@ -225,7 +225,7 @@ if( $response_type == 'code' ) {
 
 	}
 
-} elseif( $grant_type == 'authorization_code' && $request_type == 'post' ) {
+} elseif( $grant_type == 'authorization_code' ) {
 
 	// https://indieauth.spec.indieweb.org/#request
 
