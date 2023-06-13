@@ -73,7 +73,7 @@ $tenminutesinseconds = 10*60; // so we cache the token for a maximum of 10 minut
 // the cache file is also deleted as soon as we use the token, so it can't be used more than once
 
 
-$iss = url(); // TODO: check, what we want to use here -- the client will check $iss like this (from https://indieauth.spec.indieweb.org/#authorization-response ): [check] That the iss parameter in the request is valid and matches the issuer parameter provided by the Server Metadata endpoint during Discovery as outlined in OAuth 2.0 Authorization Server Issuer Identification. Clients MUST compare the parameters using simple string comparison. If the value does not match the expected issuer identifier, clients MUST reject the authorization response and MUST NOT proceed with the authorization grant. For error responses, clients MUST NOT assume that the error originates from the intended authorization server. 
+$iss = url();
 
 $redirect['query'] = array(
 	'code' => $code,

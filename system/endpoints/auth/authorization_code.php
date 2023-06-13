@@ -6,18 +6,20 @@ if( ! $core ) exit;
 
 $query = $core->route->get('query');
 
+
 $client_id = false;
 if( ! empty($query['client_id']) ) $client_id = $query['client_id'];
 
 $redirect_uri = false;
 if( ! empty($query['redirect_uri']) ) $redirect_uri = $query['redirect_uri'];
 
-// TODO: check $redirect_uri, see https://indieauth.spec.indieweb.org/#redirect-url
+if( ! verify_redirect_uri( $redirect_uri, $client_id ) ){
+	snippet('header');
+	$core->error( 'unauthorized_redirect_uri', 'this redirect_uri is not allowed (host must match client_id, or redirect_uri must be published by client_id)', NULL, false );
+	snippet('footer');
+	exit;
+}
 
-// TODO: If the URL scheme, host or port of the redirect_uri in the request do not match that of the client_id, then the authorization endpoint SHOULD verify that the requested redirect_uri matches one of the redirect URLs published by the client, and SHOULD block the request from proceeding if not.
-
-// If a client wishes to use a redirect URL that has a different host than their client_id, or if the redirect URL uses a custom scheme (such as when the client is a native application), then the client will need to explicitly list those redirect URLs so that authorization endpoints can be sure it is safe to redirect users there. The client SHOULD publish one or more <link> tags or Link HTTP headers with a rel attribute of redirect_uri at the client_id URL.
-// Authorization endpoints verifying that a redirect_uri is allowed for use by a client MUST look for an exact match of the given redirect_uri in the request against the list of redirect_uris discovered after resolving any relative URLs.
 
 $code = false;
 if( isset($query['code']) ) $code = $query['code'];
