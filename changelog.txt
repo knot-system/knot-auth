@@ -1,6 +1,7 @@
 v.0.0.2
 
-- 
+- more validation
+- bugfixes & enhancements
 
 
 v.0.0.1
