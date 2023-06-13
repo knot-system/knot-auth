@@ -30,6 +30,16 @@ class Route {
 		$request = explode( '/', $request );
 
 		$query = $_REQUEST;
+		
+		// access token may be send via Authorization Bearer
+		if( empty($query['token']) ) {
+			if( ! empty($_SERVER['HTTP_AUTHORIZATION']) ) {
+				$query['token'] = trim(str_replace('Bearer', '', $_SERVER['HTTP_AUTHORIZATION']));
+			} elseif( ! empty($_SERVER['Authorization']) ) {
+				$query['token'] = trim(str_replace('Bearer', '', $_SERVER['Authorization']));
+			}
+		}
+
 
 		$endpoint = '404';
 
