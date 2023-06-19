@@ -119,8 +119,6 @@ $data['issued_timestamp'] = time();
 $data['expire_timestamp'] = time()+$access_token_lifetime;
 
 
-$access_token_short = get_hash($access_token);
-
 $access_token_cache = new Cache( 'access_token', $access_token, false, $access_token_lifetime );
 $access_token_cache->add_data( json_encode($data) );
 
