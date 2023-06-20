@@ -1,5 +1,6 @@
 v.0.0.2
 
+- added /generate-password/ endpoint, to generate a password hash
 - more validation
 - bugfixes & enhancements
 
