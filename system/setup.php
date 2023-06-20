@@ -89,9 +89,10 @@ if( $config_missing ) {
 		?>
 		<hr>
 		<form action="<?= $baseurl ?>" method="POST">
-			<p><label><strong>Me</strong><br><small>the url you identify as; required</small><br><input type="text" name="me" placeholder="https://www.example.com" required></label></p>
-			<p><label><strong>Password</strong><br><small>the password you want to use when using this service to log in; required</small><br><input type="password" name="password" placeholder="your super secret password" value="" required></label></p>
+			<p><label><strong>Me</strong><br><small>the url you identify as</small><br><input type="text" name="me" placeholder="https://www.example.com" required></label></p>
+			<p><label><strong>Password</strong><br><small>the password you want to use when using this service to log in</small><br><input type="password" name="password" placeholder="your super secret password" value="" required></label></p>
 			<p><button>start installation</button></p>
+			<p><small>all fields are required</small></p>
 		</form>
 		<?php
 		exit;
@@ -210,7 +211,7 @@ if( $config_missing ) {
 	$password = hash_password($password);
 
 
-	$content = "<?php\r\n\r\nreturn [\r\n	'password' => '$password',\r\n	'me' => '".$me."',\r\n];\r\n";
+	$content = "<?php\r\n\r\nreturn [\r\n	'users' => [\r\n		[\r\n			'me' => '".$me."',\r\n			'password' => '$password'\r\n		]\r\n	]\r\n];\r\n";
 	if( file_put_contents( $abspath.'config.php', $content ) === false ) {
 
 		if( $output ) {

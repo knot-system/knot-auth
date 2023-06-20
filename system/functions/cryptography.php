@@ -1,7 +1,5 @@
 <?php
 
-// NOTE: for now, this is a simple wrapper around password_hash() and password_veriy(), but this may change later.
-
 
 function hash_password( $password ) {
 
@@ -9,10 +7,19 @@ function hash_password( $password ) {
 }
 
 
-function validate_password( $password ) {
+function validate_password( $submitted_me, $submitted_password ) {
 	global $core;
 
-	$hashed_password = $core->config->get('password');
+	$users = $core->config->get('users');
 
-	return password_verify( $password, $hashed_password );
+	if( ! is_array($users) || empty($users) ) return false;
+
+	foreach( $users as $user ) {
+		if( normalize_url($user['me']) != normalize_url($submitted_me) ) continue;
+
+		$hashed_password = $user['password'];
+		return password_verify( $submitted_password, $hashed_password );
+	}
+
+	return false;
 }

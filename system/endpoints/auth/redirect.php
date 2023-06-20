@@ -55,9 +55,9 @@ if( $response_type != 'code' || ! $redirect_uri || ! $state ) {
 $entered_password = $query['password'];
 unset($query['password']);
 
-if( ! validate_password( $entered_password ) ) {
+if( ! validate_password( $me, $entered_password ) ) {
 	snippet( 'header' );
-	$core->error( 'unauthorized', 'this is not the correct password', NULL, false );
+	$core->error( 'unauthorized', 'this is not the correct user or password', NULL, false );
 	snippet( 'footer' );
 }
 
