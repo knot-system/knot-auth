@@ -7,6 +7,7 @@ function hash_password( $password ) {
 }
 
 
+// returns false on failure, or 'me' value on success
 function validate_password( $submitted_me, $submitted_password ) {
 	global $core;
 
@@ -18,7 +19,9 @@ function validate_password( $submitted_me, $submitted_password ) {
 		if( normalize_url($user['me']) != normalize_url($submitted_me) ) continue;
 
 		$hashed_password = $user['password'];
-		return password_verify( $submitted_password, $hashed_password );
+		if( password_verify( $submitted_password, $hashed_password ) ) {
+			return $user['me'];
+		}
 	}
 
 	return false;

@@ -123,13 +123,16 @@ $access_token_cache = new Cache( 'access_token', $access_token, false, $access_t
 $access_token_cache->add_data( json_encode($data) );
 
 
+$me = $data['returned_me'];
+
+
 header("Content-type: application/json");
 
 $return = [
 	'access_token' => $access_token,
 	'token_type' => $token_type,
 	'scope' => $scope,
-	'me' => $core->config->get('me'),
+	'me' => $me,
 	'expires_in' => $access_token_lifetime,
 	//'profile' => $profile,
 	//'refresh_token' => $refresh_token,

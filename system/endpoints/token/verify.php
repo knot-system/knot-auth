@@ -33,9 +33,11 @@ if( $expire_timestamp-time() < 0 ) {
 	exit;
 }
 
+$me = $data['returned_me'];
+
 $response = [
 	'active' => true,
-	'me' => $core->config->get('me'),
+	'me' => $me,
 	'client_id' => $data['client_id'],
 	'scope' => $data['scope'],
 	'exp' => $data['expire_timestamp'],

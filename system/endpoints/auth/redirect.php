@@ -55,11 +55,14 @@ if( $response_type != 'code' || ! $redirect_uri || ! $state ) {
 $entered_password = $query['password'];
 unset($query['password']);
 
-if( ! validate_password( $me, $entered_password ) ) {
+$returned_me = validate_password( $me, $entered_password );
+if( ! $returned_me ) {
 	snippet( 'header' );
 	$core->error( 'unauthorized', 'this is not the correct user or password', NULL, false );
 	snippet( 'footer' );
 }
+
+$data['returned_me'] = $returned_me;
 
 unset($entered_password);
 

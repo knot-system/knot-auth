@@ -99,10 +99,12 @@ if( $code_verifier_challenge != $data['code_challenge'] ) {
 }
 
 
+$me = $data['returned_me'];
+
 header("Content-type: application/json");
 
 $return = [
-	'me' => $core->config->get('me')
+	'me' => $me
 ];
 
 echo json_encode( $return );
