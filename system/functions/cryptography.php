@@ -16,7 +16,8 @@ function validate_password( $submitted_me, $submitted_password ) {
 	if( ! is_array($users) || empty($users) ) return false;
 
 	foreach( $users as $user ) {
-		if( normalize_url($user['me']) != normalize_url($submitted_me) ) continue;
+
+		if( un_trailing_slash_it(normalize_url($user['me'])) != un_trailing_slash_it(normalize_url($submitted_me)) ) continue;
 
 		$hashed_password = $user['password'];
 		if( password_verify( $submitted_password, $hashed_password ) ) {
