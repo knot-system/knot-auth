@@ -20,4 +20,26 @@ Your server needs to run at least PHP 8.0 or later.
 
 Copy all the files into a directory on your webserver, then open the url to this path in a webbrowser. Follow the installation instructions.
 
-More information will follow soon.
+## Additional Identities
+
+you can add additional Identities in the `config.php` file in the root folder. Use the `generate-password` endpoint (for example, https://www.example.com/generate-password/ ) to generate a new password hash. Then add additional identities like this:
+
+```php
+<?php
+
+return [
+	'users' => [
+		[
+			'me' => 'https://www.example.com',
+			'password' => '$2y$10$...'
+		],
+		[
+			'me' => 'https://other-identity.example.com/',
+			'password' => '$2y$10$...'
+		]
+	]
+];
+
+```
+
+When you log in, the `me` URL is set automatically and you need to provide the corresponding password, to log in.
