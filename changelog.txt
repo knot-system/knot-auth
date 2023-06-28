@@ -1,3 +1,6 @@
+v.0.1.1
+
+
 v.0.1.0
 
 - allow multiple user accounts / me urls (see system/config.php for details)
