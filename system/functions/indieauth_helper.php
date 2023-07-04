@@ -11,7 +11,7 @@ function base64_urlencode( $string ) {
 	return rtrim( $string, '=' );
 }
 
-function generate_access_token( $length = 256 ) {
+function generate_token( $length = 256 ) {
 
 	$bytes = random_bytes( $length );
 	$access_token = bin2hex( $bytes );

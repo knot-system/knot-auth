@@ -45,7 +45,7 @@ if( $data ) {
 }
 
 
-if( ! $data ) {
+if( ! $data || empty($data['code']) || $data['code'] != $code ) {
 	snippet('header');
 	$core->error( 'unauthorized', 'code not valid', NULL, false );
 	snippet('footer');
@@ -105,38 +105,10 @@ if( $code_verifier_challenge != $data['code_challenge'] ) {
 	exit;
 }
 
-$access_token_lifetime = $core->config->get( 'access_token_lifetime' );
-$access_token = generate_access_token();
-$token_type = 'Bearer'; // NOTE: we currently only support the 'Bearer' token_type
-$scope = $data['scope'];
-$profile = false; // TODO, see https://indieauth.spec.indieweb.org/#profile-information
-$refresh_token = false; // TODO: The refresh token, which can be used to obtain new access tokens as defined in Refresh Tokens -- https://indieauth.spec.indieweb.org/#refresh-tokens
 
-$data['access_token'] = $access_token;
-$data['token_type'] = $token_type;
-$data['refresh_token'] = $refresh_token;
-$data['issued_timestamp'] = time();
-$data['expire_timestamp'] = time()+$access_token_lifetime;
+unset($data['code']);
 
 
-$access_token_cache = new Cache( 'access_token', $access_token, false, $access_token_lifetime );
-$access_token_cache->add_data( json_encode($data) );
-
-
-$me = $data['returned_me'];
-
-
-header("Content-type: application/json");
-
-$return = [
-	'access_token' => $access_token,
-	'token_type' => $token_type,
-	'scope' => $scope,
-	'me' => $me,
-	'expires_in' => $access_token_lifetime,
-	//'profile' => $profile,
-	//'refresh_token' => $refresh_token,
-];
-
-echo json_encode( $return );
+// create and send new access & refresh token:
+include( $core->abspath.'system/endpoints/token/send_token.php' );
 exit;
