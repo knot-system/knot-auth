@@ -1,5 +1,7 @@
 v.0.1.1
 
+- added refresh_token
+
 
 v.0.1.0
 
