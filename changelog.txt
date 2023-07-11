@@ -1,5 +1,7 @@
 v.0.1.1
 
+when updating to this version, you need to do a fresh reinstall or a manual update (see README.md), or at least upload the new 'theme/' folder
+
 - added refresh_token
 - added theme support
 
