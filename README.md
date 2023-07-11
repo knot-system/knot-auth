@@ -20,9 +20,15 @@ Your server needs to run at least PHP 8.0 or later.
 
 Copy all the files into a directory on your webserver, then open the url to this path in a webbrowser. Follow the installation instructions.
 
+## Endpoints
+
+The authorization endpoint URL is at `/auth`, so for example `https://www.exapmel.com/auth`, and the token endpoint is `/token`, or `https://www.example.com/token`.
+
+There is also a URL to generate password hashes at `/generate-password`, or `https://www.example.com/generate-password` (see "Additional Identities" below)
+
 ## Additional Identities
 
-you can add additional Identities in the `config.php` file in the root folder. Use the `generate-password` endpoint (for example, https://www.example.com/generate-password/ ) to generate a new password hash. Then add additional identities like this:
+you can add additional Identities in the `config.php` file in the root folder. Use the `generate-password` endpoint (for example, `https://www.example.com/generate-password/` ) to generate a new password hash. Then add additional identities like this:
 
 ```php
 <?php
