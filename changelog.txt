@@ -1,6 +1,7 @@
 v.0.1.1
 
 - added refresh_token
+- added theme support
 
 
 v.0.1.0

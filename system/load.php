@@ -25,6 +25,13 @@ include_once( $abspath.'system/classes.php' );
 
 
 $core = new Core();
+
+
+// here we gooo
+
+$core->theme->load();
+
+
 $core->setup();
 
 

@@ -232,6 +232,7 @@ if( $step == 'check' ) {
 	echo '<p>Deleting old files … ';
 	flush();
 
+	deleteDirectory( $abspath.'theme/default/' );
 	deleteDirectory( $abspath.'system/' );
 	unlink( $abspath.'index.php' );
 	unlink( $abspath.'README.md');
@@ -242,6 +243,7 @@ if( $step == 'check' ) {
 	echo '<p>Moving new files to new location … ';
 	flush();
 
+	rename( $subfolder.'theme/default', $abspath.'theme/default' );
 	rename( $subfolder.'system', $abspath.'system' );
 	rename( $subfolder.'index.php', $abspath.'index.php' );
 	rename( $subfolder.'README.md', $abspath.'README.md' );
@@ -254,6 +256,67 @@ if( $step == 'check' ) {
 
 	deleteDirectory( $abspath.'cache/');
 	mkdir( $abspath.'cache/' );
+
+	echo 'done.</p>';
+
+	echo '<p>Checking snippets in custom themes … ';
+	flush();
+
+	$custom_theme_dir = $abspath.'theme/';
+	$custom_themes = [];
+	foreach( scandir( $custom_theme_dir ) as $theme_name ) {
+		if( $theme_name == '.' || $theme_name == '..' ) continue;
+		if( ! is_dir($custom_theme_dir.$theme_name) ) continue;
+		if( $theme_name == 'default' ) continue;
+
+		$custom_themes[] = $theme_name;
+	}
+
+	if( count($custom_themes) ) {
+
+		echo '<ul>';
+
+		$displayed_update_message = false;
+
+		foreach( $custom_themes as $custom_theme ) {
+
+			$custom_theme_snippets = $abspath.'theme/'.$custom_theme.'/snippets/';
+			if( ! is_dir($custom_theme_snippets) ) continue;
+
+			foreach( scandir( $custom_theme_snippets ) as $snippet_name ) {
+				if( $snippet_name == '.' || $snippet_name == '..' ) continue;
+				if( ! str_ends_with($snippet_name, '.php') ) continue;
+
+				$file_contents = file_get_contents( $custom_theme_snippets.$snippet_name );
+				if( preg_match( '/\/\/ Version: (.*)/i', $file_contents, $matches ) ) {
+
+					$custom_theme_snippet_version = trim($matches[1]);
+
+					$system_file_contents = file_get_contents( $abspath.'system/site/snippets/'.$snippet_name );
+					if( preg_match( '/\/\/ Version: (.*)/i', $system_file_contents, $system_matches ) ) {
+						$system_snippet_version = trim($system_matches[1]);
+
+						if( $custom_theme_snippet_version == $system_snippet_version ) continue;
+					
+						echo '<li>Custom theme <em>'.$custom_theme.'</em>: snippet <strong>'.$snippet_name.'</strong> needs to be updated! (theme version: '.$custom_theme_snippet_version.', system version: '.$system_snippet_version.')</li>';
+
+						$displayed_update_message = true;
+
+					}
+
+				}
+
+			}
+
+		}
+
+		if( ! $displayed_update_message ) echo '<li>all snippets in all custom themes are up to date</li>';
+
+		echo '</ul>';
+
+	} else {
+		echo 'no custom themes found. ';
+	}
 
 	echo 'done.</p>';
 	flush();

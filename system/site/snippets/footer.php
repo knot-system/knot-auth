@@ -1,6 +1,6 @@
 <?php
 
-// Version: 0.0.1
+// Version: 0.1.1
 
 if( ! $core ) exit;
 
@@ -12,5 +12,5 @@ if( ! $core ) exit;
 	<a href="https://github.com/maxhaesslein/einwohnermeldeamt" target="_blank" rel="noopener">Einwohnermeldeamt</a> v.<?= $core->version() ?>
 </footer>
 
-</body>
-</html>
+<?php
+foot_html();

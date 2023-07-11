@@ -13,6 +13,7 @@ class Core {
 
 	public $config;
 	public $log;
+	public $theme;
 
 	public $session;
 
@@ -49,6 +50,15 @@ class Core {
 		}
 
 		$this->log = new Log();
+
+
+		$this->theme = new Theme();
+
+		$this->theme->add_metatag( 'charset', '<meta charset="utf-8">' );
+		$this->theme->add_metatag( 'viewport', '<meta name="viewport" content="width=device-width,initial-scale=1.0">' );
+		$this->theme->add_metatag( 'title', '<title>Einwohnermeldeamt</title>' );
+
+		$this->theme->add_metatag( 'generator', '<meta tag="generator" content="Einwohnermeldeamt v.'.$core->version().'">' );
 
 	}
 

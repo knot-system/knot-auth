@@ -6,6 +6,7 @@ $query = $core->route->get('query');
 
 $endpoint = $core->route->get('endpoint');
 
+snippet( 'header' );
 ?>
 <h2>Hash a new password:</h2>
 <form action="<?= url($endpoint) ?>" method="POST">
@@ -22,3 +23,5 @@ if( ! empty( $query['pw'] ) ) {
 	<?php
 
 }
+
+snippet( 'footer' );
