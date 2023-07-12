@@ -22,9 +22,11 @@ Copy all the files into a directory on your webserver, then open the url to this
 
 ## Endpoints
 
-The authorization endpoint URL is at `/auth`, so for example `https://www.exapmel.com/auth`, and the token endpoint is `/token`, or `https://www.example.com/token`.
+The IndieAuth metadata endpoint is `/metadata`, so for example `https://www.example.com/metadata/`. This endpoint lists all other available endpoints. You should point the `indieauth-metadata` tag to this endpoint.
 
-There is also a URL to generate password hashes at `/generate-password`, or `https://www.example.com/generate-password` (see "Additional Identities" below)
+Other included endpoints are `/auth`, `/token` and `/revocation`.
+
+There is also a URL to generate password hashes at `/generate-password`, or `https://www.example.com/generate-password/` (see "Additional Identities" below)
 
 ## Additional Identities
 

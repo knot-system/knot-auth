@@ -4,6 +4,8 @@ when updating to this version, you need to do a fresh reinstall or a manual upda
 
 - added refresh_token
 - added theme support
+- added metadata endpoint
+- added revocation endpoint
 
 
 v.0.1.0
