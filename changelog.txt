@@ -6,6 +6,7 @@ when updating to this version, you need to do a fresh reinstall or a manual upda
 - added theme support
 - added metadata endpoint
 - added revocation endpoint
+- added compatibility with homestead-control
 
 
 v.0.1.0
