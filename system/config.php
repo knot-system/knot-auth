@@ -14,5 +14,6 @@ return [
 			'pass' => '', // hashed password; use https://www.example.com/generate-password/ to get the password hash
 		],
 		// add additional user arrays if required
-	]
+	],
+	'user_agent' => 'knot/auth/', // version will be automatically appended
 ];

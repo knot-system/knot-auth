@@ -9,7 +9,7 @@ if( ! $core ) exit;
 </main>
 
 <footer>
-	<a href="https://github.com/maxhaesslein/einwohnermeldeamt" target="_blank" rel="noopener">Einwohnermeldeamt</a> v.<?= $core->version() ?> / <?= $core->theme->get('name') ?> v.<?= $core->theme->get('version') ?>
+	<a href="https://github.com/maxhaesslein/knot-auth" target="_blank" rel="noopener">Knot Auth</a> v.<?= $core->version() ?> / <?= $core->theme->get('name') ?> v.<?= $core->theme->get('version') ?>
 </footer>
 
 <?php

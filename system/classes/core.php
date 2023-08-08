@@ -56,9 +56,9 @@ class Core {
 
 		$this->theme->add_metatag( 'charset', '<meta charset="utf-8">' );
 		$this->theme->add_metatag( 'viewport', '<meta name="viewport" content="width=device-width,initial-scale=1.0">' );
-		$this->theme->add_metatag( 'title', '<title>Einwohnermeldeamt</title>' );
+		$this->theme->add_metatag( 'title', '<title>Knot Auth</title>' );
 
-		$this->theme->add_metatag( 'generator', '<meta tag="generator" content="Einwohnermeldeamt v.'.$core->version().'">' );
+		$this->theme->add_metatag( 'generator', '<meta tag="generator" content="Knot Auth v.'.$core->version().'">' );
 
 	}
 

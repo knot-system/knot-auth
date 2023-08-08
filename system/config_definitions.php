@@ -1,6 +1,6 @@
 <?php
 
-// these options are displayed in the 'homestead-control' module
+// these options are displayed in the 'knot-control' module
 
 return [
 	'theme' => [
@@ -14,6 +14,6 @@ return [
 	],
 	'users' => [
 		'type' => 'complex',
-		'description' => 'these users are allowed to log in; you can use the <code>generate-password</code> endpoint to get hashed passwords. see <a href="https://github.com/maxhaesslein/einwohnermeldeamt#additional-identities" target="_blank" rel="noopener">Additional Identities</a> in the README for details.'
+		'description' => 'these users are allowed to log in; you can use the <code>generate-password</code> endpoint to get hashed passwords. see <a href="https://github.com/maxhaesslein/knot-auth#additional-identities" target="_blank" rel="noopener">Additional Identities</a> in the README for details.'
 	]
 ];
