@@ -1,6 +1,6 @@
 # Knot Auth
 
-A small IndieAuth authorization & token endpoint, which is part of a larger system called **Knot System**. You can install it as a standalone service, or use the [Knot Installer](https://github.com/knot-system/knot-installer), which also installs other modules alongside it.
+A small IndieAuth authorization & token endpoint, which is part of a larger system called [Knot System](https://github.com/knot-system). You can install it as a standalone service, or use the [Knot Installer](https://github.com/knot-system/knot-installer), which also installs other modules alongside it.
 
 For now, this allows logging in via password. More methods will follow.
 
