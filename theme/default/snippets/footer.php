@@ -1,6 +1,6 @@
 <?php
 
-// Version: 0.1.1
+// Version: 0.2.1
 
 if( ! $core ) exit;
 
@@ -9,7 +9,7 @@ if( ! $core ) exit;
 </main>
 
 <footer>
-	<a href="https://github.com/maxhaesslein/knot-auth" target="_blank" rel="noopener">Knot Auth</a> v.<?= $core->version() ?> / <?= $core->theme->get('name') ?> v.<?= $core->theme->get('version') ?>
+	<a href="https://github.com/knot-system/knot-auth" target="_blank" rel="noopener">Knot Auth</a> v.<?= $core->version() ?> / <?= $core->theme->get('name') ?> v.<?= $core->theme->get('version') ?>
 </footer>
 
 <?php
