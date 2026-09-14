@@ -14,6 +14,16 @@ A default webserver install / shared hosting service _should_ meet all requireme
 - support for .htaccess files, with mod_rewrite
 - write-access to the folder where this service is installed
 
+## Authorization Header on CGI/FastCGI Hosts
+
+Some servers, for example Apache running PHP as CGI or FastCGI, do not pass the `Authorization` header on to PHP, so access tokens sent as `Authorization: Bearer` are not found and token checks fail. If that happens, add this line at the top of the `.htaccess` file:
+
+```
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+```
+
+Knot Auth then reads the token from the `REDIRECT_HTTP_AUTHORIZATION` server variable.
+
 ## Initial Setup
 
 Your server needs to run at least PHP 8.0 or later.
